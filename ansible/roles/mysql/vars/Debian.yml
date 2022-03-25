@@ -1,0 +1,14 @@
+---
+__mysql_daemon: mysql
+__mysql_packages:
+  - mysql-common
+  - mysql-server
+__mysql_slow_query_log_file: /var/log/mysql/mysql-slow.log
+mysql_config_path: /etc/mysql
+mysql_config_file: /etc/mysql/my.cnf
+mysql_data_path: /var/lib/mysql
+mysql_run_path: /var/run/mysqld
+mysql_socket: /var/run/mysqld/mysqld.sock
+
+# Logging settings.
+mysql_log_error: /var/log/mysql/error.log

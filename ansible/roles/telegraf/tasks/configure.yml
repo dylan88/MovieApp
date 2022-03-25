@@ -1,0 +1,14 @@
+---
+- name: Configure Telegraf agent
+  template:
+    src: telegraf.conf.j2
+    dest: "{{ telegraf_linux_path }}/telegraf.conf"
+    owner: telegraf
+    group: telegraf
+  notify: restart telegraf
+
+- name: Ensure Telegraf is started and set to run on startup.
+  service: 
+    name: telegraf
+    state: started
+    enabled: yes

@@ -1,0 +1,8 @@
+---
+# version de tomcat : uniquement 7 d'autorisé pour l'instant
+tomcat_version: 8
+tomcat_port: 8080
+
+tomcat_manager_user: admin
+tomcat_manager_password: admin
+

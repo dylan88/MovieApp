@@ -1,0 +1,35 @@
+---
+- name: elasticsearch apt GPG key
+  apt_key:
+    url: "http://packages.elastic.co/GPG-KEY-elasticsearch"
+  become: yes
+
+- name: Logstash apt repo
+  apt_repository:
+    repo: "deb http://packages.elastic.co/logstash/{{ logstash.version }}/{{ ansible_os_family|lower }} stable main"
+    state: present
+
+- name: Install Logstash.
+  apt:
+    name: logstash
+    state: latest
+  notify:
+    - restart logstash
+
+- name: Add Logstash user to adm group (Debian).
+  user:
+    name: logstash
+    group: logstash
+    groups: adm
+  notify: restart logstash
+
+- name: Logstash sample conf file
+  template:
+    src: "sample.conf.j2"
+    dest: "/etc/logstash/conf.d/sample.conf"
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+  when: logstash.apache_logs_enabled
+  notify: restart logstash

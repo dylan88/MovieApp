@@ -1,0 +1,7 @@
+- name: Install basic packages (if any are configured).
+  yum: "name={{ basic_packages | list }} state=present"  
+  when: basic_packages | length
+
+- name: Install extra apt packages (if any are configured).
+  yum: "name={{ extra_packages | list }} state=present"  
+  when: extra_packages | length

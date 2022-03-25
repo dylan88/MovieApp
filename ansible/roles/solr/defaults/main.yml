@@ -1,0 +1,50 @@
+---
+## M# Custom ##
+solr_force_reinstall: false
+## End M# Custom ##
+
+## M# Custom Install local tika ##
+solr_use_local_tika: true
+solr_tika_jar_url: https://dlcdn.apache.org/tika/1.28/tika-server-1.28.jar
+solr_tika_path: /var/tika
+solr_tika_download_jar: true
+## End M# Custom Install local tika ##
+
+solr_workspace: /root
+
+solr_create_user: true
+solr_user: solr
+solr_group: "{{ solr_user }}"
+
+solr_version: "8.11.1"
+solr_mirror: "https://dlcdn.apache.org"
+solr_remove_cruft: false
+
+solr_service_manage: true
+solr_service_name: solr
+solr_service_state: started
+
+solr_install_dir: /opt
+solr_install_path: "/opt/{{ solr_service_name }}"
+solr_home: "/var/{{ solr_service_name }}"
+solr_connect_host: localhost
+solr_port: "8983"
+
+solr_xms: "256M"
+solr_xmx: "512M"
+
+solr_timezone: "UTC"
+
+solr_opts: "$SOLR_OPTS -Dlog4j2.formatMsgNoLookups=true"
+
+solr_cores:
+  - collection1
+
+solr_config_file: /etc/default/{{ solr_service_name }}.in.sh
+
+# Enable restart solr handler
+solr_restart_handler_enabled: true
+
+# Used only for Solr < 5.
+solr_log_file_path: /var/log/solr.log
+solr_host: "0.0.0.0"

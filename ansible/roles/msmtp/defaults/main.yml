@@ -1,0 +1,9 @@
+# msmtp configuration.
+msmtp_mailhub: localhost:1025
+msmtp_root: postmaster
+msmtp_authuser: ""
+msmtp_authpass: ""
+msmtp_from_line_override: "YES"
+
+smtp_user_mailinfos:
+    - {name: root, email: test@test.com}

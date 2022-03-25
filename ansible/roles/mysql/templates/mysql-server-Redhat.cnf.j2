@@ -1,0 +1,19 @@
+#
+# These groups are read by MySQL server.
+# Use it for options that only the server (but not clients) should see
+#
+# See the examples of server my.cnf files in /usr/share/mysql/
+#
+
+# this is read by the standalone daemon and embedded servers
+[server]
+
+# this is only for the mysqld standalone daemon
+[mysqld]
+datadir={{mysql_data_path}}
+socket={{mysql_socket}}
+log-error={{mysql_log_error}}
+pid-file={{mysql_run_path}}/mysqld.pid
+
+# Skip reverse DNS lookup of clients
+skip-name-resolve

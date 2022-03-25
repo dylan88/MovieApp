@@ -1,0 +1,9 @@
+# ssmtp configuration.
+ssmtp_mailhub: localhost:1025
+ssmtp_root: postmaster
+ssmtp_authuser: ""
+ssmtp_authpass: ""
+ssmtp_from_line_override: "YES"
+
+smtp_user_mailinfos:
+    - {name: root, email: test@test.com}

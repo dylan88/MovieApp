@@ -1,0 +1,52 @@
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Define php_xdebug_config_file.
+  set_fact:
+    php_xdebug_config_file: "{{ __php_xdebug_config_file }}"
+  when: php_xdebug_config_file is not defined
+
+- name : install xdebug package
+  apt:
+    name: "{{php_xdebug_package}}"
+    state: present
+  notify: restart webserver
+  when: ansible_os_family == 'Debian'
+
+- name : install xdebug package
+  yum:
+    name: "{{php_xdebug_package}}"
+    state: present
+  notify: restart webserver
+  when: ansible_os_family == 'RedHat'
+
+- name: Include PHP 5.4 specific variables.
+  include_vars: "php-54.yml"
+  when: "php_version.split('.')[0] == '5' and php_version.split('.')[1] <= '4'"
+
+- name: Copy xdebug ini into main extension config folder.
+  template:
+    src: xdebug.ini.j2
+    dest: "{{ php_extension_conf_paths }}/{{php_xdebug_config_file}}"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart webserver
+    - restart php-fpm
+
+- name: Copy xdebug ini into php-fpm config folder.
+  template:
+    src: xdebug.ini.j2
+    dest: "{{ php_fpm_extension_conf_path }}/{{php_xdebug_config_file}}"
+    owner: root
+    group: root
+    mode: 0644
+  when: php_enable_php_fpm
+  notify:
+    - restart webserver
+    - restart php-fpm
+
+- name: Disable xdebug for CLI.
+  command: phpenmod -s cli xdebug
+  when: ansible_os_family == 'Debian'

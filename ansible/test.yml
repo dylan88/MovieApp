@@ -1,0 +1,30 @@
+- hosts: webservers
+
+  vars:
+    composer_user: root
+    composer_home_path: '~/.composer'
+    composer_path: /usr/bin/composer
+
+  roles:
+    - common
+    - apache
+    - php
+    - devtools
+    - mysql
+    - ssmtp
+
+    - adminer
+    - drush
+    - wp_cli
+    - phpxdebug
+    - phppear
+    - memcached
+    - phpmemcache
+    - java
+    - solr
+    - varnish
+    - composer
+    - elasticsearch
+    - kibana
+    - phantomjs
+    - rabbitmq

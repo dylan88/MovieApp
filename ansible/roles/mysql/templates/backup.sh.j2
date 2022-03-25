@@ -1,0 +1,9 @@
+#!/bin/bash
+
+{% for db in mysql_backup_databases %}
+# {{ db }}
+mkdir -p {{ db }}
+mysqldump -u '{{ mysql_backup_user }}' -p'{{ mysql_backup_password }}' {{ db }} | gzip > {{ mysql_backup_path }}/{{ db }}/{{ db }}_$(date +%Y-%m-%d-%H.%M.%S).sql.gz
+ls -1tr {{ mysql_backup_path }}/{{ db }}/* | head -n -{{ mysql_backup_number_of_backups_to_keep }} | xargs -d '\n' rm -f
+
+{% endfor %}

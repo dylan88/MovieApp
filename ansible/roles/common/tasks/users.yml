@@ -1,0 +1,8 @@
+---
+- name: create system users
+  user:
+    name: "{{ item.name }}"
+    password: "{{ item.password | default(false) }}"
+    groups: "{{ item.group | default('') }}"
+    shell: /bin/bash
+  with_items: "{{ system_users }}"

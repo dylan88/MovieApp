@@ -1,0 +1,22 @@
+# VM configuration
+vagrant_ip: 192.168.116.91
+#vagrant_memory: 2048
+vagrant_cpus: 2
+
+# Xdebug
+php_xdebug_idekey: PHPSTORM
+#php_xdebug_default_enable: 0
+
+# SMTP
+ssmtp_mailhub: smtp.micropole.net:2525
+smtp_user_mailinfos:
+    - { name: root, email: xxx@micropole.com }
+    - { name: vagrant, email: xxx@micropole.com }
+
+# Fix for UNIX users
+#vagrant_synced_folders:
+#  - local_path: ./website
+#    destination: /var/www/website
+#    type: nfs
+#    create: true
+#    mount_options: ['vers=3', 'rw', 'tcp', 'nolock']

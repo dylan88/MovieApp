@@ -1,0 +1,30 @@
+---
+
+# by default we generate an autosigner certificate
+ssl_is_autosigned: true
+
+# var for generation
+ssl_certs_days: "365"
+ssl_certs_key_size: "2048"
+ssl_certs_country: "FR"
+ssl_certs_locality: "FRANCE"
+ssl_certs_organization: "Micropole"
+ssl_certs_state: "Lyon"
+ssl_certs_common_name: "{{ansible_fqdn}}"
+ssl_certs_fields: "/C={{ssl_certs_country}}/ST={{ssl_certs_state}}/L={{ssl_certs_locality}}/O={{ssl_certs_organization}}/CN={{ssl_certs_common_name}}"
+ssl_certs_mode: "0700"
+
+# if not autosigned, copy it from somewhere
+ssl_copy_files:
+  - from: apache.crt
+    to: micropole.crt
+  - from: apache.key
+    to: micropole.key
+
+# Where should we put the certifcate in any cases
+ssl_directory_path: /etc/apache2/ssl
+ssl_directory_owner: www-data
+ssl_directory_group: www-data
+ssl_crt_filename: 'micropole.crt'
+ssl_key_filename: 'micropole.key'
+ssl_pem_filename: 'micropole.pem'

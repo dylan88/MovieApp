@@ -1,0 +1,19 @@
+# IDE
+nbproject
+.netbeans.xml
+.idea
+
+# Vagrant/Ansible
+.vagrant
+ansible/vars/config_vagrant.local.yml
+*.retry
+
+# System
+Thumbs.db
+.DS_Store
+._*
+
+# Others
+components
+
+*~

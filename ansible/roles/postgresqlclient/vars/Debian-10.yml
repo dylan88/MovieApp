@@ -1,0 +1,6 @@
+---
+__postgresql_version: "11"
+__postgresql_packages:
+  - postgresql-client
+# Debian 10 uses Python 3 by default.
+postgresql_python_library: python3-psycopg2

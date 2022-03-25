@@ -1,0 +1,10 @@
+- include: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include: cron.yml
+  when: debianvm_cron_jobs is defined
+
+- include: users.yml

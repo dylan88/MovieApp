@@ -1,0 +1,7 @@
+---
+- name: Ensure Apache is installed.
+  yum:
+    name: "{{ apache_packages }}"
+    state: installed
+    enablerepo: "{{ apache_enablerepo }}"
+

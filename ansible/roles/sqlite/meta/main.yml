@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: Alex Wilson
+  description: Ansible role to create sqlite databases
+  license: MIT
+  min_ansible_version: 1.4
+  categories:
+  - database
+  - database:sql
+  platforms:
+  - name: Debian
+    versions:
+    - all
+dependencies: []

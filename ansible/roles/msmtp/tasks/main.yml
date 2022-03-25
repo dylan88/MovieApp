@@ -1,0 +1,19 @@
+- name: Install mSMTP on Debian.
+  apt:
+    pkg:
+    - msmtp
+    - msmtp-mta
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Install mSMTP on RedHat.
+  yum: pkg=msmtp state=installed
+  when: ansible_os_family == 'RedHat'
+
+- name: Copy mSMTP configuration.
+  template:
+    src: msmtprc.j2
+    dest: /etc/msmtprc
+    owner: root
+    group: root
+    mode: 0644

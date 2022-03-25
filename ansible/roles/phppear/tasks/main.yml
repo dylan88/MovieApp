@@ -1,0 +1,44 @@
+---
+- name: Update pear.php.net channel Debian.
+  command: pear channel-update pear.php.net
+  register: pear_update_result
+  changed_when: "'is up to date' not in pear_update_result.stdout"
+  when: ansible_os_family == 'Debian'
+
+- name: Update pear.php.net channel RedHat.
+  command: scl enable rh-php56 'pear channel-update pear.php.net'
+  register: pear_update_result
+  changed_when: "'is up to date' not in pear_update_result.stdout"
+  when: ansible_os_family == 'RedHat'
+
+- name: Discover required PEAR channels Debian.
+  command: pear channel-discover {{ item }}
+  register: channel_result
+  changed_when: "'already initialized' not in channel_result.stdout"
+  failed_when: "channel_result.stderr"
+  with_items: "{{php_pear_channels}}"
+  when: ansible_os_family == 'Debian'
+
+- name: Discover required PEAR channels RedHat.
+  command: scl enable rh-php56 'pear channel-discover {{ item }}'
+  register: channel_result
+  changed_when: "'already initialized' not in channel_result.stdout"
+  failed_when: "channel_result.stderr"
+  with_items: "{{php_pear_channels}}"
+  when: ansible_os_family == 'RedHat'
+
+- name: Install PEAR libraries Debian.
+  command: pear install {{ item }}
+  register: pear_result
+  changed_when: "'already installed' not in pear_result.stdout"
+  failed_when: "pear_result.stderr"
+  with_items: "{{php_pear_libraries}}"
+  when: ansible_os_family == 'Debian'
+
+- name: Install PEAR libraries RedHat.
+  command: scl enable rh-php56 'pear install {{ item }}'
+  register: pear_result
+  changed_when: "'already installed' not in pear_result.stdout"
+  failed_when: "pear_result.stderr"
+  with_items: "{{php_pear_libraries}}"
+  when: ansible_os_family == 'RedHat'

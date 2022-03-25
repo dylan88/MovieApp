@@ -1,0 +1,4 @@
+dev_local ansible_connection=local
+
+[webservers]
+dev_local

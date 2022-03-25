@@ -1,0 +1,22 @@
+- name: Include local variables for development environment.
+  include_vars:
+    file: config_vagrant.local.yml
+
+- name: Ensure website directory exists
+  file:
+    path: "{{ website_path }}/web"
+    state: directory
+    mode: '0777'
+    owner: www-data
+    group: www-data
+
+- name: Create default index.php for
+  template:
+    src: index.php.j2
+    dest: "{{ website_path }}/web/index.php"
+    mode: '0777'
+    owner: www-data
+    group: www-data
+    force: no
+  vars:
+    - website_name: "formation"

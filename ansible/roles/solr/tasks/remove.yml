@@ -1,0 +1,57 @@
+---
+
+# M# Custom Tasks to remove current solr installation
+
+- name: stop solr
+  service:
+    name: "{{ solr_service_name }}"
+    state: stopped
+    sleep: 5
+
+- name: remove solr home
+  file:
+    path: "{{ solr_home }}"
+    state: absent
+
+- name: solr install dir folders
+  find:
+    paths: "{{ solr_install_dir }}"
+    patterns: "solr*"
+    file_type: any
+  register: solr_install_dirs_to_remove
+
+#- name: Prints debug vars
+#  ansible.builtin.debug:
+#    msg:
+#      - "solr_install_dirs_to_remove: {{ solr_install_dirs_to_remove.files }}"
+
+- name: remove solr install dir
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ solr_install_dirs_to_remove.files }}"
+
+- name: remove solr service
+  file:
+    path: "/etc/init.d/{{ solr_service_name }}"
+    state: absent
+
+- name: delete solr user
+  user:
+    name: "{{ solr_user }}"
+    state: absent
+
+- name: remove solr group
+  group:
+    name: "{{ solr_user }}"
+    state: absent
+
+- name: remove solr service starting at system startup
+  service:
+    name: "{{ solr_service_name }}"
+    enabled: no
+
+- name: remove solr.in.sh
+  file:
+    path: "{{ solr_config_file }}"
+    state: absent

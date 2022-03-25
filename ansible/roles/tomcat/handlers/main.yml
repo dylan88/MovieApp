@@ -1,0 +1,8 @@
+---
+
+# handlers
+- include: handlers-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: handlers-Debian.yml
+  when: ansible_os_family == 'Debian'

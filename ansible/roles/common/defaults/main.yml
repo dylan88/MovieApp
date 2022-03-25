@@ -1,0 +1,8 @@
+basic_packages:
+  - unzip
+  - vim
+  - htop
+
+extra_packages: ""
+
+system_users: []

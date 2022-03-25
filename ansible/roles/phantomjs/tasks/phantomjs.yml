@@ -1,0 +1,31 @@
+- name: PhantomJS | Download
+  get_url: url={{ phantomjs_url }}
+           dest=/var/tmp/{{ phantomjs_archive }}
+
+- name: PhantomJS | Unarchive
+  unarchive: src=/var/tmp/{{ phantomjs_archive }} dest=/var/tmp creates=/var/tmp/{{ phantomjs_bin }} copy=no
+
+- name: PhantomJS | Symlink executable
+  file: dest=/usr/bin/{{ phantomjs_daemon }} src=/var/tmp/{{ phantomjs_bin }} state=link
+
+- name: Add init.d daemon script
+  template:
+    src: init.d-template.j2
+    dest: "/etc/init.d/{{ phantomjs_daemon }}"
+    mode: 0751
+
+- name: "Ensure {{ phantomjs_daemon }} launches on boot"
+  command: "systemctl enable {{ phantomjs_daemon }}"
+
+- name: enable phantomjs service
+  service:
+    name: "{{ phantomjs_daemon }}"
+    state: started
+    enabled: yes
+
+- name: Add ip to host file
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ item.ip }} {{ item.host }}"
+    state: present
+  with_items: "{{ phantomjs_add_to_host }}"

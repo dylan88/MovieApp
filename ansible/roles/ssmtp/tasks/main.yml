@@ -1,0 +1,23 @@
+- name: Install sSMTP on Debian.
+  apt: pkg=ssmtp state=present
+  when: ansible_os_family == 'Debian'
+
+- name: Install sSMTP on RedHat.
+  yum: pkg=ssmtp state=present
+  when: ansible_os_family == 'RedHat'
+
+- name: Copy sSMTP configuration.
+  template:
+    src: ssmtp.conf.j2
+    dest: /etc/ssmtp/ssmtp.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy revaliases configuration.
+  template:
+    src: revaliases.j2
+    dest: /etc/ssmtp/revaliases
+    owner: root
+    group: root
+    mode: 0644

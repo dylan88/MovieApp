@@ -1,0 +1,48 @@
+---
+# Install local tika
+
+- name: Define solr_tika_apache_user.
+  set_fact:
+    solr_tika_apache_user: apache
+  when: ansible_os_family == 'RedHat'
+  tags: 
+    - variables
+  
+- name: Define solr_tika_apache_user.
+  set_fact:
+    solr_tika_apache_user: www-data
+  when: ansible_os_family == 'Debian'
+  tags: 
+    - variables
+
+- name: Assures tika folder exists
+  file: path="{{ solr_tika_path }}" state=directory owner="{{solr_tika_apache_user}}"
+  when: solr_use_local_tika == true
+  
+- name: Define local download folder.
+  set_fact:
+    local_download_folder: /tmp
+  when: local_download_folder is not defined
+  tags: 
+    - variables
+
+- name: Define remote program folder.
+  set_fact:
+    remote_program_folder: /tmp
+  when: remote_program_folder is not defined
+
+- name: download tika for document extraction
+  get_url:
+    url: "{{solr_tika_jar_url}}"
+    dest: "{{ local_download_folder }}/solr-tika.jar"
+    force: no
+    owner: "{{solr_tika_apache_user}}"
+  when: solr_tika_download_jar == true and solr_use_local_tika == true
+  delegate_to: localhost
+  tags: 
+    - download
+
+- name: Copy to remote machine
+  copy:
+    src: "{{ local_download_folder }}/solr-tika.jar"
+    dest: "{{ solr_tika_path }}"

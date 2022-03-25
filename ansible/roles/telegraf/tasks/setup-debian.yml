@@ -1,0 +1,32 @@
+---
+- name: Install Telegraf packages [Debian/Ubuntu]
+  apt:
+    name: apt-transport-https
+    state: latest
+
+# L'url de la clé n'a pas de certificat valide, ce qui pose problème sur certains serveurs
+#- name: Import InfluxData GPG signing key [Debian/Ubuntu]
+#  apt_key:
+#    url: "{{ influxdata_gpg_key }}"
+#    state: present
+
+- name: send influxdb cert file
+  copy:
+    src: influxdb.key
+    dest: /tmp/influxdb.key
+- name: Import InfluxData GPG signing key [Debian/Ubuntu]
+  apt_key:
+    file: "/tmp/influxdb.key"
+    state: present
+
+- name: Add InfluxData repository [Debian/Ubuntu]
+  apt_repository:
+    repo: "{{ telegraf_apt_repo }}"
+    state: present
+
+- name: Install Telegraf packages [Debian/Ubuntu]
+  apt:
+    name: telegraf
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600  

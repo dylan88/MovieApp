@@ -1,0 +1,30 @@
+---
+
+## M# Custom Install local tika ##
+
+- name: Define solr_tika_apache_user.
+  set_fact:
+    solr_tika_apache_user: apache
+  when: ansible_os_family == 'RedHat'
+
+- name: Define solr_tika_apache_user.
+  set_fact:
+    solr_tika_apache_user: www-data
+  when: ansible_os_family == 'Debian'
+
+- name: Assures tika folder exists
+  file:
+    path: "{{ solr_tika_path }}"
+    state: directory
+    owner: "{{solr_tika_apache_user}}"
+  when: solr_use_local_tika == true
+
+- name: download tika for document extraction
+  get_url:
+    url: "{{solr_tika_jar_url}}"
+    dest: "{{ solr_tika_path }}"
+    force: no
+    owner: "{{solr_tika_apache_user}}"
+  when: solr_tika_download_jar == true and solr_use_local_tika == true
+
+## End M# Custom Install local tika ##

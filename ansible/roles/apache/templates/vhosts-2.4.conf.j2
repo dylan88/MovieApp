@@ -1,0 +1,22 @@
+
+{# Set up VirtualHosts #}
+
+<VirtualHost *:{% if item.port is defined %}{{ item.port }}{% else %}{{ apache_listen_port }}{% endif %}>
+  ServerName {{ item.servername }}
+{% if item.serveralias is defined %}
+  ServerAlias {{ item.serveralias }}
+{% endif %}
+  DocumentRoot {{ item.documentroot }}
+
+{% if item.serveradmin is defined %}
+  ServerAdmin {{ item.serveradmin }}
+{% endif %}
+  <Directory "{{ item.documentroot }}">
+    AllowOverride {{ apache_allow_overide }}
+    Options -Indexes +FollowSymLinks
+    Require all granted
+  </Directory>
+{% if item.extra_parameters is defined %}
+  {{ item.extra_parameters }}
+{% endif %}
+</VirtualHost>

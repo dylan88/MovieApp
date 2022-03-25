@@ -1,0 +1,22 @@
+- name: install tomcat package
+  apt: "name=[tomcat{{ tomcat_version }}, tomcat{{ tomcat_version }}-admin] state=present"
+
+- name: configuration file
+  template:
+    src: "tomcat{{ tomcat_version }}-server.xml.j2"
+    dest: "/etc/tomcat{{ tomcat_version }}/server.xml"
+    owner: tomcat7
+    group: tomcat7
+    mode: 0644
+  notify:
+    - restart tomcat
+
+- name: users configuration file
+  template:
+    src: "tomcat-users.xml.j2"
+    dest: "/etc/tomcat{{ tomcat_version }}/tomcat-users.xml"
+    owner: tomcat7
+    group: tomcat7
+    mode: 0644
+  notify:
+    - restart tomcat

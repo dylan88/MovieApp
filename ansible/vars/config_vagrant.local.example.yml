@@ -1,0 +1,12 @@
+# VM configuration
+vagrant_ip: 192.168.XXX.XXX
+vagrant_memory: 4096
+vagrant_cpus: 2
+
+# Fix for UNIX users
+#vagrant_synced_folders:
+#  - local_path: ./website
+#    destination: /var/www/website
+#    type: nfs
+#    create: true
+#    mount_options: ['vers=3', 'rw', 'tcp', 'nolock']

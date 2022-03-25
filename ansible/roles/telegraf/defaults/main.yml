@@ -1,0 +1,43 @@
+---
+
+telegraf_linux_path: /etc/telegraf
+
+# defaults for telegraf debian repo
+influxdata_gpg_key: https://repos.influxdata.com/influxdb.key
+telegraf_apt_repo: deb https://repos.influxdata.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable
+
+telegraf_debug: "false"
+telegraf_agent_interval: 10s
+telegraf_round_interval: "false"
+telegraf_flush_interval: 30s
+telegraf_flush_jitter: 15s
+
+telegraf_influxdb_urls: 
+  - http://localhost:8086
+telegraf_influxdb_database: telegraf
+telegraf_influxdb_precision: s
+telegraf_influxdb_timeout: 5s
+
+telegraf_inputs:
+  - 
+    type: cpu
+    config:
+      percpu: "true"
+      totalcpu: "true"
+  -
+    type: disk    
+  -
+    type: io    
+  -
+    type: mem
+  -
+    type: system
+
+telegraf_outputs:
+  -
+    type: influxdb
+    config:
+      urls: "{{ telegraf_influxdb_urls }}"
+      database: "{{ telegraf_influxdb_database }}"
+      precision: "{{ telegraf_influxdb_precision }}"
+      timeout: "{{ telegraf_influxdb_timeout }}"

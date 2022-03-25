@@ -1,0 +1,16 @@
+---
+
+- name: Generate self-signed SSL certificate
+  command: openssl req -x509 -nodes -days "{{ ssl_certs_days }}" -newkey rsa:"{{ ssl_certs_key_size }}" -keyout "{{ ssl_directory_path }}/{{ ssl_key_filename }}" -out "{{ ssl_directory_path }}/{{ ssl_crt_filename }}" -subj "{{ ssl_certs_fields }}"
+
+- name: Self-signed SSL certificate file ownership
+  file: path={{ ssl_directory_path }}/{{ ssl_key_filename }} owner={{ ssl_directory_owner }} group={{ ssl_directory_group }} mode={{ ssl_certs_mode }}
+
+- name: pem file exists
+  stat:
+    path: "{{ ssl_directory_path }}/{{ ssl_pem_filename }}"
+  register: ssl_pem_file_exists
+
+- name: generate pem file
+  shell: "cat {{ ssl_directory_path }}/{{ ssl_key_filename }} >> {{ ssl_directory_path }}/{{ ssl_pem_filename }};cat {{ ssl_directory_path }}/{{ ssl_crt_filename }} >> {{ ssl_directory_path }}/{{ ssl_pem_filename }}"
+  when: ssl_pem_file_exists.stat

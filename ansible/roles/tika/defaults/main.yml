@@ -1,0 +1,5 @@
+solr_use_local_tika: true
+solr_tika_jar_url: http://archive.apache.org/dist/tika/tika-app-1.14.jar
+solr_tika_path: /var/tika
+
+solr_tika_download_jar: true

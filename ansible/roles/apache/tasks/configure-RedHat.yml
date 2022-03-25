@@ -1,0 +1,65 @@
+---
+#RedHat et Vagrant, l'option SendFile doit etre désactivé pour que les fichiers
+#soit rafraichit correctement
+- name: disable SendFile on RedHat
+  lineinfile:
+    dest: "{{ apache_server_root }}/conf/{{ apache_bin }}.conf"
+    regexp: "EnableSendfile on"
+    line: "EnableSendfile off"
+    state: present
+  when: vagrant_box is defined
+  notify: restart apache
+  
+- name: Configure Apache.
+  lineinfile:
+    dest: "{{ apache_server_root }}/conf/{{ apache_bin }}.conf"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  with_items: "{{apache_ports_configuration_items}}"
+  notify: restart apache
+
+- name: Add apache vhosts configuration.
+  template:
+    src: "vhosts-{{ apache_vhosts_version }}.conf.j2"
+    dest: "{{ apache_conf_path }}/site-{{ item.name }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{apache_vhosts}}"
+  notify: restart apache
+  when: apache_create_vhosts
+
+# set firewall to accept httpd
+- name: Authorize http service to firewalld
+  command: firewall-cmd --permanent --add-service=http 
+
+# reload firewall 
+- name: Reload firewalld
+  command: firewall-cmd --reload
+
+- name: SELinux - add httpd to site directory
+  shell: semanage fcontext -a -t httpd_sys_content_t '{{ item.documentroot }}(/.*)?'
+  with_items: "{{apache_vhosts}}"
+  when: vagrant_box is not defined
+
+# seLinux : set special policy for vagrant so that httpd can access files
+- name: SELinux - check loaded modules
+  shell: semodule -l
+  register: selinuxmodules
+  check_mode: no
+  changed_when: False
+ 
+- name: copy SELinux modules 
+  action: copy src=../selinux/vagrantHttpAccess.pp dest=/tmp/vagrantHttpAccess.pp owner=root mode=600
+  when: 
+    - selinuxmodules.stdout.find('vagrantHttpAccess') == -1 
+    - vagrant_box is defined
+  # .pp file was generated with audit2allow : https://github.com/mitchellh/vagrant/issues/6970
+  # http://jensd.be/587/linux/tips-tricks-for-ansible
+ 
+- name: install SELinux module
+  command: semodule -i /tmp/vagrantHttpAccess.pp
+  when: 
+    - selinuxmodules.stdout.find('vagrantHttpAccess') == -1 
+    - vagrant_box is defined

@@ -1,0 +1,96 @@
+ANSIBLE DEBIAN VM
+---------------------------------------
+
+Script ansible et vagrantfile pour l'installation d'un serveur local ou distant.
+
+v1.11
+12/03/2018
+
+Modifications :
+- Ajout du rôle PhantomJS
+- Ajout du rôle RabbitMQ
+
+v1.10
+07/03/2018
+
+Modifications :
+- Common : Ajout du shell par défaut (bash) pour les system users
+- Config : Ajout de Drush dans installed_extras, modification de valeurs par défaut, ajout des rôles en integ
+- WP_CLI : Création d'un rôle WP CLI pour Wordpress
+- Intégration rôle sslcertificate en integ
+- Intégration rôle WP CLI
+- Modification nom du projet par défaut
+
+v1.9
+20/02/2018
+
+Modifications :
+- Common : ajout d'arguments password et group pour l'ajout des system_users
+
+v1.8
+20/07/2017
+
+Modifications :
+- Ajout du role SQLITE
+
+v1.7
+20/03/2017
+
+Modifications :
+- récupération de Ansible depuis le repo ansible (dernière version)
+- configuration de php-fpm pour debian
+- configuration redhat de solr, varnish, memcached
+- résolution du problème mysql (conflit config redhat / debian)
+
+v1.6
+03/11/2016
+
+Modifications :
+- Ajout de rôles pour ELK
+- gestion de Vagrant-cachier
+- Gestion des erreurs de fichier de config
+- Script pour RedHat avec les software collection
+- configuration de php-fpm possible
+
+v1.5
+01/08/2016
+
+Modifications :
+- Common : ajout du paramètre "user" pour les tâches cron (par défaut à root)
+
+v1.4
+29/07/2016
+
+Modifications :
+- Xdebug : Désactivation de Xdebug en mode CLI (évite problèmes de performance avec Composer)
+- Amélioration du fichier de configuration locale avec exemples de modifications possibles
+
+v1.3
+27/07/2016
+
+Modifications :
+- Xdebug : Ajout du répertoire pour les extensions Zend (nécessaire pour le fonctionnement de Xdebug sous PHP < 5.5)
+
+v1.2
+26/07/2016
+
+Modifications :
+- Drush : Ajout de la version lors de la récupération de fichier, pour gestion mise à jour
+
+v1.1
+22/01/2016
+-----------
+Ajout :
+- Memcached
+- Varnish
+- Solr
+
+Corrections :
+- config SSMTP
+- paramétrage VM (mémore / CPU)
+- option vHost apache
+
+v1.0
+11/01/2016
+-----------
+- Installation PHP, Mysql sur une debian 8. Configuration des bases de données et des vhosts.

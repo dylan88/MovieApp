@@ -1,0 +1,31 @@
+---
+#- name: Ensure OpenSSL is installed
+#  package: name=openssl state=present
+#  tags: [ssl-certs,packages]
+
+- name: Ensure ssl folder exist
+  file:
+    path: "{{ ssl_directory_path }}"
+    state: directory
+    owner: "{{ ssl_directory_owner }}"
+    group: "{{ ssl_directory_group }}"
+
+- name: Create autosigned certificate
+  include: generate.yml
+  when: ssl_is_autosigned == true
+
+- name: Copy self-signed SSL certificate files
+  copy:
+    src: "{{ item.from }}"
+    dest:  "{{ ssl_directory_path }}/{{ item.to }}"
+  with_items: "{{ ssl_copy_files  | default([]) }}"
+  when: ssl_is_autosigned == false
+
+- name: Set ownership to self-signed SSL certificate files
+  file:
+    path: "{{ ssl_directory_path }}/{{ item.to }}"
+    owner: "{{ ssl_directory_owner }}"
+    group: "{{ ssl_directory_group }}"
+    mode: "{{ ssl_certs_mode }}"
+  with_items: "{{ ssl_copy_files  | default([]) }}"
+  when: ssl_is_autosigned == false

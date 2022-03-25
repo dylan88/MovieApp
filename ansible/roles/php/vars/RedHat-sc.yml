@@ -1,0 +1,26 @@
+__php_packages:
+  - rh-php56-php  
+  - rh-php56-php-gd  
+  - rh-php56-php-pdo
+  - rh-php56-php-opcache
+
+__php_webserver_daemon: "httpd"
+__php_sc_webserver_daemon: "httpd24-httpd"
+
+# Vendor-specific configuration paths on Debian/Ubuntu make my brain asplode.
+__php_conf_paths: "/etc/opt/rh/rh-php56"
+__php_extension_conf_paths: "{{__php_conf_paths}}/php.d"
+__php_cli_conf_path: "{{__php_conf_paths}}"
+
+__php_apc_conf_filename: 20-apc.ini
+__php_opcache_conf_filename: 10-opcache.ini
+
+
+__php_fpm_daemon: rh-php56-php-fpm
+__php_fpm_conf_path: "/etc/opt/rh/rh-php56/php-fpm"
+__php_fpm_pool_path: "/etc/opt/rh/rh-php56/php-fpm"
+__php_fpm_pool_conf_path: "/etc/opt/rh/rh-php56/php-fpm/www.conf"
+__php_fpm_extension_conf_path: "{{ __php_fpm_conf_path }}/conf.d"
+
+__php_fpm_pool_user: apache
+__php_fpm_pool_group: apache

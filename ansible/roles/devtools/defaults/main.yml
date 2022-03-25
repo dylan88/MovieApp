@@ -1,0 +1,4 @@
+basic_dev_packages: 
+  - git
+  
+extra_dev_packages: ""

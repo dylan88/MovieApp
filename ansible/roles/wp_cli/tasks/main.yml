@@ -1,0 +1,16 @@
+---
+- name: Get wp cli
+  get_url:
+    url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    dest: "{{ wp_install_path }}"
+
+- name: Set execution right
+  file:
+      path: "{{ wp_install_path }}"
+      mode: 655
+
+- name: Create wp symlink.
+  file:
+    src: "{{ wp_install_path }}"
+    dest: "{{ wp_path }}"
+    state: link

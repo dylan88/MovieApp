@@ -1,0 +1,52 @@
+php_enable_webserver: true
+
+# The executable to run when calling PHP from the command line.
+php_executable: "php"
+
+# PHP-FPM configuration.
+php_enable_php_fpm: false
+php_fpm_listen: "127.0.0.1:9000"
+php_fpm_listen_allowed_clients: "127.0.0.1"
+php_fpm_pm_max_children: 50
+php_fpm_pm_start_servers: 5
+php_fpm_pm_min_spare_servers: 5
+php_fpm_pm_max_spare_servers: 5
+
+# OpCache settings (useful for PHP >=5.5).
+php_opcache_enabled_in_ini: false
+php_opcache_enable: "1"
+php_opcache_enable_cli: "0"
+php_opcache_memory_consumption: "96"
+php_opcache_interned_strings_buffer: "16"
+php_opcache_max_accelerated_files: "4096"
+php_opcache_max_wasted_percentage: "5"
+php_opcache_validate_timestamps: "1"
+php_opcache_revalidate_freq: "2"
+php_opcache_max_file_size: "0"
+
+# APC settings (useful for PHP <5.5).
+php_enable_apc: true
+php_apc_enabled_in_ini: false
+php_apc_cache_by_default: "1"
+php_apc_shm_size: "96M"
+php_apc_stat: "1"
+php_apc_enable_cli: "0"
+
+# If this is set to false, none of the following options will have any effect.
+# Any and all changes to /etc/php.ini will be your responsibility.
+php_use_managed_ini: true
+
+php_memory_limit: "256M"
+php_memory_limit_cli: "4096M"
+php_max_execution_time: "60"
+php_upload_max_filesize: "64M"
+php_post_max_size: "32M"
+php_date_timezone: "Europe/Paris"
+php_display_errors: "Off"
+php_session_save_handler: files
+php_session_save_path: /var/lib/php/sessions
+php_disable_functions: pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,
+
+php_sendmail_path: "/usr/sbin/sendmail -t -i"
+
+php_use_redhat_softwarecollections: true

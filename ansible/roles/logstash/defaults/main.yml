@@ -1,0 +1,7 @@
+---
+logstash:
+  version: 2.4
+  elasticsearch:
+    host: localhost
+    port: 9200
+  apache_logs_enabled: 1

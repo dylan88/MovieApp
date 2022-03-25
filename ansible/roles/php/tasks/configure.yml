@@ -1,0 +1,68 @@
+---
+
+- name: Disable opcache if PHP version is < 5.5.
+  set_fact:
+    php_opcache_enable: 0
+  when: "php_version.split('.')[0] == '5' and php_version.split('.')[1] < '5'"
+
+- name: Ensure configuration directories exist.
+  file:
+    path: "{{ item }}"
+    state: directory
+    #follow: true
+  with_items:
+    - "{{ php_conf_paths }}"
+    - "{{ php_fpm_conf_path }}"
+    - "{{ php_cli_conf_path }}"
+    - "{{ php_extension_conf_paths }}"
+
+- name: Place PHP configuration file in place.
+  template:
+    src: php.ini.j2
+    dest: "{{ item }}/php.ini"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - "{{ php_conf_paths }}"
+    - "{{ php_fpm_conf_path }}"
+    - "{{ php_cli_conf_path }}"
+  notify: restart webserver
+  when: php_use_managed_ini
+
+- name: Place PHP configuration file in place.
+  template:
+    src: php.ini.j2
+    dest: "{{ item }}/php.ini"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - "{{ php_cli_conf_path }}"
+  notify: restart webserver
+  when: php_use_managed_ini
+  vars:
+    - php_disable_functions: ""
+    - php_memory_limit: "{{ php_memory_limit_cli }}"
+
+- name: Place APC configuration file in place.
+  template:
+    src: apc.ini.j2
+    dest: "{{ php_extension_conf_paths }}/{{ php_apc_conf_filename }}"
+    owner: root
+    group: root
+    force: yes
+    mode: 0644
+  when: php_enable_apc
+  notify: restart webserver
+
+- name: Place OpCache configuration file in place.
+  template:
+    src: opcache.ini.j2
+    dest: "{{ php_extension_conf_paths }}/{{ php_opcache_conf_filename }}"
+    owner: root
+    group: root
+    force: yes
+    mode: 0644
+  when: php_opcache_enable | bool
+  notify: restart webserver

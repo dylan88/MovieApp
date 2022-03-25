@@ -1,0 +1,22 @@
+---
+- name: Ensure MySQL Python libraries are installed.
+  yum: "name=MySQL-python state=present enablerepo={{ mysql_enablerepo }}"
+
+- name: Ensure MySQL packages are installed.
+  yum:
+    name: "{{ mysql_packages }}"
+    state: present
+    enablerepo: "{{ mysql_enablerepo | default(omit, true) }}"
+  register: rh_mysql_install_packages
+
+- name: Enable software collection executable
+  template:
+    src: enablemysql56scl.sh.j2
+    dest: "/etc/profile.d/enablemysql56scl.sh"
+    owner: root
+    group: root
+    mode: 0644
+  when: mysql_use_redhat_softwarecollections
+
+# add script to bashrc for php avaibility during vagrant provisionning
+- lineinfile: dest=/etc/bashrc line="source /opt/rh/rh-mysql56/enable"

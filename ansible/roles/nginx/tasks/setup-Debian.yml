@@ -1,0 +1,18 @@
+---
+- name: Add nginx sign key
+  apt_key:
+    url: https://nginx.org/keys/nginx_signing.key
+    state: present
+  when: nginx_use_nginx_repo
+
+- name: add nginx repository
+  apt_repository:
+    repo: "deb http://nginx.org/packages/mainline/debian {{ ansible_distribution_release }} nginx"
+    state: present 
+  when: nginx_use_nginx_repo
+
+- name: Ensure nginx is installed.
+  apt:
+    name: "{{ nginx_package_name }}"
+    state: present
+    default_release: "{{ nginx_default_release }}"

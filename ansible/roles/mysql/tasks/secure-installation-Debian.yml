@@ -1,0 +1,34 @@
+---
+- name: Get list of hosts for the root user.
+  command: >
+    mysql -NBe 'SELECT Host FROM mysql.user WHERE User = "root" ORDER BY (Host="localhost") ASC'
+  register: mysql_root_hosts
+  changed_when: false
+  when: mysql_install_packages | bool or mysql_root_password_update
+
+# Note: We do not use mysql_user for this operation, as it doesn't always update
+# the root password correctly. See: https://goo.gl/MSOejW
+- name: Update MySQL root password for localhost root account.
+  shell: >
+    mysql --user={{ mysql_root_username }} -NBe
+    'SET PASSWORD FOR "{{ mysql_root_username }}"@"{{ item }}" = PASSWORD("{{ mysql_root_password }}");'
+  with_items: "{{ mysql_root_hosts.stdout_lines }}"
+  when: (mysql_install_packages | bool or mysql_root_password_update)
+
+- name: Get list of hosts for the anonymous user.
+  command: >
+    mysql --user={{ mysql_root_username }} --password={{ mysql_root_password }} -NBe 'SELECT Host FROM mysql.user WHERE User = ""'    
+  register: mysql_anonymous_hosts
+  changed_when: false
+
+- name: Remove anonymous MySQL users.
+  mysql_user:
+     name: ""
+     host: "{{ item }}"
+     state: absent
+     login_user: "{{ mysql_root_username }}" 
+     login_password: "{{ mysql_root_password }}"
+  with_items: "{{ mysql_anonymous_hosts.stdout_lines }}"
+
+- name: Remove MySQL test database.
+  mysql_db: "name='test' state=absent login_user={{ mysql_root_username }} login_password={{ mysql_root_password }}"

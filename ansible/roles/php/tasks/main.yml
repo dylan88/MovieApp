@@ -1,0 +1,73 @@
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
+# Override red hat config when using software collection.
+- name: Include RedHat Software collections.
+  include_vars: "{{ ansible_os_family }}-sc.yml"
+  when: (ansible_os_family == 'RedHat') and (php_use_redhat_softwarecollections)
+
+- name: Define php_packages.
+  set_fact:
+    php_packages: "{{ __php_packages | list }}"
+  when: php_packages is not defined
+
+- name: Define php_webserver_daemon.
+  set_fact:
+    php_webserver_daemon: "{{ __php_webserver_daemon }}"
+  when: (php_webserver_daemon is not defined) and (apache_use_redhat_softwarecollections is not defined or (apache_use_redhat_softwarecollections is defined and not apache_use_redhat_softwarecollections))
+
+- name: Define php_webserver_daemon.
+  set_fact:
+    php_webserver_daemon: "{{ __php_sc_webserver_daemon }}"
+  when: (php_webserver_daemon is not defined) and (apache_use_redhat_softwarecollections is defined and apache_use_redhat_softwarecollections)
+
+- name: Define php_conf_paths.
+  set_fact:
+    php_conf_paths: "{{ __php_conf_paths }}"
+  when: php_conf_paths is not defined
+
+- name: Define php_cli_conf_path.
+  set_fact:
+    php_cli_conf_path: "{{ __php_cli_conf_path }}"
+  when: php_cli_conf_path is not defined
+
+- name: Define php_fpm_conf_path.
+  set_fact:
+    php_fpm_conf_path: "{{ __php_fpm_conf_path }}"
+  when: php_fpm_conf_path is not defined
+
+- name: Define php_extension_conf_paths.
+  set_fact:
+    php_extension_conf_paths: "{{ __php_extension_conf_paths }}"
+  when: php_extension_conf_paths is not defined
+
+- name: Define php_apc_conf_filename.
+  set_fact:
+    php_apc_conf_filename: "{{ __php_apc_conf_filename }}"
+  when: php_apc_conf_filename is not defined
+
+- name: Define php_opcache_conf_filename (Ubuntu 16.04).
+  set_fact:
+    php_opcache_conf_filename: "10-opcache.ini"
+  when: php_opcache_conf_filename is not defined and ansible_distribution_version == "16.04"
+
+- name: Define php_opcache_conf_filename.
+  set_fact:
+    php_opcache_conf_filename: "{{ __php_opcache_conf_filename }}"
+  when: php_opcache_conf_filename is not defined
+
+- name: disable php webserver when using fpm
+  set_fact:
+    php_enable_webserver: false
+  when: php_enable_php_fpm
+
+# Setup/install tasks.
+- include: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+  
+# Configure PHP.
+- include: configure.yml
+- include: configure-fpm.yml

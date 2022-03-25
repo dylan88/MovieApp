@@ -1,0 +1,17 @@
+---
+- name: elasticsearch apt GPG key
+  apt_key:
+    url: "http://packages.elastic.co/GPG-KEY-elasticsearch"
+  become: yes
+
+- name: Add Kibana apt repo.
+  apt_repository:
+    repo: "deb http://packages.elastic.co/kibana/{{ kibana.version }}/{{ ansible_os_family|lower }} stable main"
+    state: present
+
+- name: Install Kibana.
+  apt:
+    name: kibana
+    state: latest
+  notify:
+    - restart kibana

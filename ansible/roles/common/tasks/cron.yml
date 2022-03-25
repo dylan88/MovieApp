@@ -1,0 +1,13 @@
+- name: Ensure configured cron jobs exist in root account's crontab.
+  cron:
+    name: "{{ item.name }}"
+    minute: "{{ item.minute | default('*') }}"
+    hour: "{{ item.hour | default('*') }}"
+    day: "{{ item.day | default('*') }}"
+    weekday: "{{ item.weekday | default('*') }}"
+    month: "{{ item.month | default('*') }}"
+    job: "{{ item.job }}"
+    state: "{{ item.state | default('present') }}"
+    user: "{{ item.user | default('root') }}"
+  with_items: "{{debianvm_cron_jobs}}"
+  when: debianvm_cron_jobs is defined

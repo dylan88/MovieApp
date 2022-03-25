@@ -1,0 +1,20 @@
+---
+#software collection configuration
+apache_bin: httpd
+apache_daemon: httpd24-httpd
+apache_daemon_path: /opt/rh/httpd24/root/usr/sbin/
+apache_server_root: /opt/rh/httpd24/root/etc/httpd
+apache_conf_path: /opt/rh/httpd24/root/etc/httpd/conf.d
+
+apache_vhosts_version: "2.4"
+
+__apache_packages:
+  - httpd24  
+  - httpd24-mod_ssl
+  - openssh
+
+apache_ports_configuration_items:
+  - regexp: "^Listen "
+    line: "Listen {{ apache_listen_port }}"
+  - regexp: "^NameVirtualHost "
+    line: "NameVirtualHost *:{{ apache_listen_port }}"

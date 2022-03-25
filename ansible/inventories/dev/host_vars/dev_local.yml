@@ -1,0 +1,4 @@
+# SMTP
+smtp_user_mailinfos:
+  - { name: root, email: XXX@micropole.com }
+  - { name: vagrant, email: XXX@micropole.com }

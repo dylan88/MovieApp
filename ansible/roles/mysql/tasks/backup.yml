@@ -1,0 +1,10 @@
+- name: Assures Backup dir exists
+  file: path="{{ mysql_backup_path }}" state=directory
+  
+- name: Backup script.
+  template:
+    src: backup.sh.j2
+    dest: "{{ mysql_backup_path }}/backup.sh"
+    owner: root
+    group: root
+    mode: 0744

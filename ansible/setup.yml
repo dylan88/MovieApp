@@ -1,0 +1,20 @@
+- hosts: webservers
+
+  pre_tasks:
+    # Pour faire fonctionner le projet sur votre machine, copiez le fichier "config_vagrant.example.yml"
+    # vers "config_vagrant.yml", et faites vos modifications/ajouts dans ce fichier.
+    - include: tasks/config_local.yml
+      when: environnement == "dev"
+    - include: tasks/hosts.yml
+
+  roles:
+    - common
+    - sslcertificate
+    - apache
+    #- nginx
+    - mysql
+    - php
+    - phppear
+    - { role: phpxdebug, when: 'environnement == "dev"' }
+    - { role: composer, when: 'environnement == "dev"' }
+

@@ -1,0 +1,13 @@
+---
+__mysql_daemon: rh-mysql56-mysqld
+__mysql_packages:
+  - rh-mysql56
+__mysql_slow_query_log_file: /var/log/mysql-slow.log
+mysql_config_path: /etc/opt/rh/rh-mysql56
+mysql_config_file: "{{mysql_config_path}}/my.cnf.d/mysql-server.cnf"
+mysql_data_path: /var/opt/rh/rh-mysql56/lib/mysql
+mysql_run_path: /var/run/rh-mysql56-mysqld
+mysql_socket: /var/lib/mysql/mysql.sock
+
+# Logging settings.
+mysql_log_error: /var/opt/rh/rh-mysql56/log/mysql/mysqld.log

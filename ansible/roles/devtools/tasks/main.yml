@@ -1,0 +1,25 @@
+# Debian
+- name: Install basic apt packages (if any are configured).
+  apt:
+    name: "{{ basic_dev_packages | list }}"
+    state: present
+  when: (basic_dev_packages | length) and (ansible_os_family == 'Debian')
+
+- name: Install extra apt packages (if any are configured).
+  apt:
+    name: "{{extra_dev_packages | list}}"
+    state: present
+  when: (extra_dev_packages | length) and (ansible_os_family == 'Debian')
+
+# RedHat
+- name: Install basic apt packages (if any are configured).
+  yum:
+    name: "{{ basic_dev_packages | list }}"
+    state: present
+  when: (basic_dev_packages | length) and (ansible_os_family == 'RedHat')
+
+- name: Install extra apt packages (if any are configured).
+  yum:
+    name: "{{extra_dev_packages | list}}"
+    state: present
+  when: (extra_dev_packages | length) and (ansible_os_family == 'RedHat')
