@@ -17,6 +17,7 @@ website_database_password: formation
 # View the geerlingguy.apache Ansible Role README for more options.
 apache_vhosts:
   - name: symfony.conf
+    port: 443
     servername: "{{ website_domain }}"
     documentroot: "{{ website_path }}/web"
     extra_parameters: |
