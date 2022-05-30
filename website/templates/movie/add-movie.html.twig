@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Movie{% endblock %}
+
+{% block body %}
+        <section id="central-section" class="bg-light p-5">
+            <div class="container jumbotron p-5 img-rounded">
+                <div class="row">
+                    {{ form(movie_form) }}
+                </div>
+            </div>
+        </section>
+{% endblock %}

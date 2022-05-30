@@ -1,0 +1,13 @@
+{% set flashes = app.flashes %}
+
+{% if flashes|length > 0 %}
+    <div class="modal-dialog">
+        {% for type, messages in flashes %}
+            <div class="alert-{{ type }}">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

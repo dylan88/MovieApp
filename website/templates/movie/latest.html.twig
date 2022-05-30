@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Latest movies{% endblock %}
+
+{% block body %}
+        <section id="central-section" class="bg-light p-5">
+            <div class="container jumbotron p-5 img-rounded">
+                <div class="row mb-5">
+                    <div class="col-lg">
+                        <h1 class="display-4 font-weight-bold">Latest Movies.</h1>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-3 text-center text-md-left pb-3">
+                        <p class="lead font-weight-bold">Latest Movies By Genre</p>
+                        <ul class="list-unstyled">
+                            <li><a href="#" title="Choose your movie by genre">Action</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Adventure</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Animation</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Biography</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Comedy</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Crime</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Drama</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Family</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Fantasy</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Film-Noir</a></li>
+                            <li><a href="#" title="Choose your movie by genre">History</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Horror</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Music</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Musical</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Mystery</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Romance</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Sci-Fi</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Sport</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Thriller</a></li>
+                            <li><a href="#" title="Choose your movie by genre">War</a></li>
+                            <li><a href="#" title="Choose your movie by genre">Western</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-9 table-responsive img-rounded bg-light p-4">
+                        <p class="font-weight-bold">December</p>
+
+                        <!-- Latest movies -->
+                        <hr>
+                        {% for movie in movies %}
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <a href="./trailer-player.html" title="{{ movie.title }}" class="album-link">
+                                        <img height="209" width="140" alt="1917 (2019) Poster" title="1917 Poster" src="{{ movie.imgurl }}">
+                                    </a>
+                                </div>
+                                <div class="col-lg-9">
+                                    <a href="./movie-details.html" title="Click to see the movie details"><h6 class="m-1 font-weight-bold">{{ movie.title }}</h6></a>
+                                    <small class="text-success font-weight-bold m-1">Age : {{ movie.age }} | {{ movie.country }} | {% for genre in movie.genres %}{{ genre }}{% if not loop.last %},{% endif %}{% endfor %}</small>
+                                    <p class="ml-1 mr-1 mt-3 mb-2"><span class="text-muted">{{ movie.description }}</span></p>
+                                    <a href="./user-cart.html" title="Add this movie to your cart" class="btn btn-xs btn-dark m-1" role="button"><i class="fas fa-plus"></i> Add to cart: <b>{{ movie.price }}</b></a>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <!-- Paginator -->
+                        <nav class="m-4">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a></li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% endblock %}

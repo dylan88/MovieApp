@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <meta name="author" content="SensioTV">
+        <meta name="description" content="Latest movies available on SensioTV.">
+
+        <title>Formation symfony - {% block title '' %}</title>
+
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+        <link rel="shortcut icon" type="image/x-icon" href="/build/images/sensiotv-favicon.ico">
+        <link rel="icon" type="image/png" href="/build/images/sensiotv-icon.png">
+        <link rel="apple-touch-icon" type="image/png" href="/build/images/sensiotv-icon.png">
+    </head>
+
+    <body>
+        {% include '_menu.html.twig' %}
+        <main id="main">
+            {% include '_flashes.html.twig' %}
+            {% block body %}{% endblock %}
+        </main>
+        {% include '_footer.html.twig' %}
+    </body>
+</html>
